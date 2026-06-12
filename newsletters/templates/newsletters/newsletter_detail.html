@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Рассылка{% endblock %}
+
+{% block content %}
+{% include 'header.html' with header_title="Детали рассылки" %}
+<div class="container mt-5">
+    <div class="row align-items-center mb-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap w-100 mb-3">
+            <h1 class="m-0">Рассылка №{{ newsletter.pk }}:</h1>
+            {% if newsletter.status == "Запущена" %}
+            <form action="{% url 'newsletters:newsletter_send' newsletter.pk %}" method="post" class="m-0">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Выполнить рассылку</button>
+            </form>
+            {% endif %}
+        </div>
+        <p><strong>Статус:</strong> {{ newsletter.status }}</p>
+        <p><strong>Старт рассылки:</strong> {{ newsletter.start_time }}</p>
+        <p><strong>Конец рассылки:</strong> {{ newsletter.end_time }}</p>
+        <!-- Блок управления раскрывающимися списками -->
+        <div class="d-flex gap-2 flex-wrap mb-3">
+            <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseMessage">
+                Показать сообщение
+            </button>
+            <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseRecipients">
+                Показать список получателей
+            </button>
+        </div>
+        <div class="collapse mb-2" id="collapseMessage">
+            <div class="card card-body">
+                <p>Тема: {{ newsletter.message.subject }}</p>
+                <p>Сообщение: {{ newsletter.message.message }}</p>
+            </div>
+        </div>
+        <div class="collapse mb-3" id="collapseRecipients">
+            <div class="card card-body">
+                <ul>
+                    {% for recipient in newsletter.recipients.all %}
+                    <li>{{ recipient.full_name }} — <a href="mailto:{{ recipient.email }}">{{ recipient.email }}</a>
+                    </li>
+                    {% empty %}
+                    <li>Получатели не указаны</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Основные кнопки действий -->
+    <div class="d-flex gap-2 flex-wrap">
+        <a class="btn btn-outline-secondary btn-sm" href="{% url 'newsletters:newsletter_list' %}">Назад к списку</a>
+        <a class="btn btn-outline-warning btn-sm" href="{% url 'newsletters:newsletter_update' newsletter.pk %}">Редактировать</a>
+        <a class="btn btn-outline-danger btn-sm"
+           href="{% url 'newsletters:newsletter_delete' newsletter.pk %}">Удалить</a>
+    </div>
+</div>
+{% endblock %}

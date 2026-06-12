@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Сообщение{% endblock %}
+
+{% block content %}
+{% include 'header.html' with header_title="Детали сообщения" %}
+<div class="container mt-5">
+    <div class="row align-items-center mb-4">
+        <h1 class="mb-4">Сообщение №{{ nl_message.pk }}:</h1>
+        <p><strong>Тема:</strong> {{ nl_message.subject }}</p>
+        <p><strong>Сообщение:</strong> {{ nl_message.message }}</p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+        <a class="btn btn-outline-secondary btn-sm" href="{% url 'newsletters:message_list' %}">Назад к списку сообщений</a>
+        <a class="btn btn-outline-warning btn-sm" href="{% url 'newsletters:message_update' nl_message.pk %}">Редактировать сообщение</a>
+        <a class="btn btn-outline-danger btn-sm" href="{% url 'newsletters:message_delete' nl_message.pk %}">Удалить сообщение</a>
+    </div>
+</div>
+{% endblock %}

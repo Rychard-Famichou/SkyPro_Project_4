@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Рассылки{% endblock %}
+
+{% block content %}
+{% include 'header.html' with header_title="Форма для создания рассылки" header_lead="Информация." %}
+<div class="container" style="max-width: 500px;">
+    <form method="post" novalidate enctype="multipart/form-data"> <!-- novalidate отключает стандартные подсказки браузера -->
+        {% csrf_token %}
+        {{ form.non_field_errors }} <!-- Ошибки, которые не связаны с конкретными полями формы -->
+        {{ form.as_p }} <!-- Рендеринг всех полей формы и связанных с ними ошибок -->
+        <button type="submit" class="btn btn-primary mt-3">Сохранить</button>
+    </form>
+</div>
+{% endblock %}

@@ -14,8 +14,6 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-import newsletters
-
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -45,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'newsletters',
+
 ]
 
 MIDDLEWARE = [
@@ -62,7 +61,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -115,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
 LANGUAGE_CODE = 'ru-RU'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Warsaw'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -130,3 +129,36 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # Медиатека (Media)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# AUTH_USER_MODEL = 'users.CustomUser'
+
+# Настройки SMTP для отправки писем через Gmail
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+# Логин и созданный пароль приложения
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# URL для перенаправления если пытается открыть страницу только для пользователей
+# LOGIN_URL = 'newsletters:login'
+
+# URL для перенаправления после успешного входа
+# LOGIN_REDIRECT_URL = 'newsletters:home'
+
+# URL для перенаправления после выхода из системы
+# LOGOUT_REDIRECT_URL = 'newsletters:home'
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+#         'LOCATION': 'redis://127.0.0.1:6379/1',
+#         "OPTIONS": {
+#             "protocol": 2,
+#         }
+#     }
+# }

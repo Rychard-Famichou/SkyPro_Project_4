@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Рассылки{% endblock %}
+
+{% block content %}
+{% url 'newsletters:newsletter_form' as newsletter_url %}
+{% include 'header.html' with header_title="Мои рассылки" header_lead="Ниже представлен список рассылок. Нажмите на рассылку что бы просмотреть её детали. Используйте кнопку выше что бы добавить новую рассылку." header_button="Добавить новую рассылку" header_url=newsletter_url %}
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="list-group shadow-sm">
+                {% for newsletter in newsletters %}
+                <a href="{% url 'newsletters:newsletter_detail' newsletter.pk %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3">
+                    <div>
+                        <span class="text-muted small me-2">Рассылка №{{ newsletter.pk }}.</span>
+                        <strong class="text-dark">Тема: "{{ newsletter.message.subject }}"</strong>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
