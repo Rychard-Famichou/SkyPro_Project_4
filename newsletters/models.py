@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -73,6 +74,18 @@ class Newsletter(models.Model):
         if self.status != new_status:
             self.status = new_status
             self.save(update_fields=['status'])
+
+    def clean(self):
+        super().clean()
+        now = timezone.now()
+        if self.start_time and self.end_time and self.end_time <= self.start_time:
+            raise ValidationError({
+                'end_time': 'Время окончания должно быть позже времени начала.'
+            })
+        if self.start_time and self.end_time and self.start_time < now:
+            raise ValidationError({
+                'start_time': 'Время начала рассылки не может быть в прошлом.'
+            })
 
 
 class Attempt(models.Model):

@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}Получатель{% endblock %}
+
+{% block content %}
+{% include 'header.html' with header_title="Удалить получателя из системы" header_lead="Вы должны подтвердить удаление получателя" %}
+<div class="container" style="max-width: 500px;">
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger mt-3">Удалить</button>
+    </form>
+</div>
+{% endblock %}
