@@ -8,6 +8,19 @@
 {% else %}
 {% include 'header.html' with header_title="Детали рассылки" header_lead="Чтобы выполнить рассылку нажмите соответствующую кнопку справа. Убедитесь что статус рассылки позволяет вам это сделать." %}
 {% endif %}
+
+<h1 class="d-flex align-items-center justify-content-center gap-3">
+    {% if newsletter.status == "Создана" %}
+    <span class="badge bg-primary fs-6">Создана</span>
+    {% elif newsletter.status == "Запущена" %}
+    <span class="badge bg-success fs-6">Запущена</span>
+    {% elif newsletter.status == "Заблокирована" %}
+    <span class="badge bg-danger fs-6">Заблокирована</span>
+    {% elif newsletter.status == "Завершена" %}
+    <span class="badge bg-black fs-6">Завершена</span>
+    {% endif %}
+</h1>
+
 <div class="container mt-5">
     <div class="row align-items-center mb-4">
         <div class="d-flex justify-content-between align-items-center flex-wrap w-100 mb-3">
@@ -41,7 +54,8 @@
         {% endif %}
         <h3><strong>Данные рассылки:</strong></h3>
         {% if request.user.is_staff %}
-        <a href="{% url 'users:user_detail' newsletter.owner.pk %}"><strong>Пользователь:</strong> {{ newsletter.owner }}</a>
+        <a href="{% url 'users:user_detail' newsletter.owner.pk %}"><strong>Пользователь:</strong> {{ newsletter.owner
+            }}</a>
         {% endif %}
         <p><strong>Статус:</strong> {{ newsletter.status }}</p>
         <p><strong>Старт рассылки:</strong> {{ newsletter.start_time }}</p>
