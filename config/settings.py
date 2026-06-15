@@ -19,7 +19,6 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
@@ -30,7 +29,6 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True if os.getenv('DEBUG') == 'True' else False
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -43,6 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'newsletters',
+    'users',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'crispy_forms',
+    'crispy_bootstrap5',
 
 ]
 
@@ -52,8 +57,12 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.LoginRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'allauth.account.middleware.AccountMiddleware',
+
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -75,7 +84,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
@@ -89,7 +97,6 @@ DATABASES = {
         'PORT': os.getenv('DATABASE_PORT', default='5432'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -109,7 +116,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
@@ -118,7 +124,6 @@ TIME_ZONE = 'Europe/Warsaw'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
@@ -130,7 +135,7 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 # Настройки SMTP для отправки писем через Gmail
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -138,27 +143,51 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+# Настройка отправки писем (консольная для разработки)
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# Логин и созданный пароль приложения
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# Конфигурация django-allauth
+ACCOUNT_EMAIL_REQUIRED = True  # Email обязателен
+ACCOUNT_USERNAME_REQUIRED = False  # Имя пользователя необязательно
+ACCOUNT_AUTHENTICATION_METHOD = 'email'  # Вход по email, а не по username
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Верификация почты обязательна ('mandatory', 'optional' или 'none')
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  # Автоматический вход после подтверждения почты
+ACCOUNT_FORMS = {
+    'login': 'users.forms.CustomLoginForm',
+    'signup': 'users.forms.CustomSignupForm',
+    'reset_password': 'users.forms.CustomResetPasswordForm',
+}
+
+# Конфигурация crispy_forms и crispy_bootstrap5 для стилей
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# Настройки перенаправления
+LOGIN_URL = '/accounts/login/' # Куда отправлять для входа
+LOGIN_REDIRECT_URL = 'home'  # Куда отправлять после входа
+ACCOUNT_LOGOUT_REDIRECT_URL = 'home'  # Куда отправлять после выхода
+
+# Email
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-# URL для перенаправления если пытается открыть страницу только для пользователей
-# LOGIN_URL = 'newsletters:login'
+# Путь к кастомному адаптеру (имя_приложения.файлик.класс)
+ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
 
-# URL для перенаправления после успешного входа
-# LOGIN_REDIRECT_URL = 'newsletters:home'
-
-# URL для перенаправления после выхода из системы
-# LOGOUT_REDIRECT_URL = 'newsletters:home'
-
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-#         'LOCATION': 'redis://127.0.0.1:6379/1',
-#         "OPTIONS": {
-#             "protocol": 2,
-#         }
-#     }
-# }
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        "OPTIONS": {
+            "protocol": 2,
+        }
+    }
+}

@@ -19,16 +19,6 @@ def check_time(newsletter):
     return newsletter.start_time < now <= newsletter.end_time
 
 
-def check_newsletter(newsletter):
-    if check_status(newsletter.status) and check_time(newsletter):
-        return True
-    return None
-
-def collect_attempts(batch):
-    if batch:
-        Attempt.objects.bulk_create(batch)
-
-
 def send_newsletter(newsletter, reason=None):
     """
     Выполняет рассылку для переданного объекта Newsletter.

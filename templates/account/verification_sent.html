@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+    <div class="card shadow-sm text-center">
+        <div class="card-body p-5">
+            <!-- Иконка письма (опционально, если есть Bootstrap Icons) -->
+            <div class="mb-4 text-primary">
+                <svg xmlns="http://w3.org" width="64" height="64" fill="currentColor" class="bi bi-envelope-check" viewBox="0 0 16 16">
+                    <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v4.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2z"/>
+                    <path d="M10.017 7 13 4.417V4a.5.5 0 0 0-.796-.403L8 6.179 3.796 3.597A.5.5 0 0 0 3 4v.417L5.983 7 3 9.583V10.23A.5.5 0 0 0 3.796 10.64L8 8.062l4.204 2.579a.5.5 0 0 0 .796-.411V9.583zM16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-1.854-1.354a.5.5 0 0 0-.707 0L11.5 13.293l-.646-.647a.5.5 0 1 0-.708.708l1 1a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0 0-.708"/>
+                </svg>
+            </div>
+            
+            <h2 class="card-title mb-3">Подтвердите Ваш адрес электронной почты</h2>
+            
+            <p class="card-text text-muted fs-5">
+                Мы отправили вам письмо с подтверждением. Перейдите по указанной в нём ссылке, чтобы завершить процесс регистрации.
+            </p>
+            
+            <div class="alert alert-warning d-inline-block mt-3" role="alert">
+                Если вы не видите письмо, обязательно проверьте папку <strong>«Спам»</strong>.
+            </div>
+            
+            <p class="text-muted small mt-4">
+                Пожалуйста, свяжитесь с нами, если вы не получите письмо в течение нескольких минут.
+            </p>
+            
+            <hr class="my-4">
+            
+            <a href="{% url 'home' %}" class="btn btn-outline-primary">На главную страницу</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

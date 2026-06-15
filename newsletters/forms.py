@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import BooleanField
 
-from newsletters.models import Newsletter, Recipient, Message
+from newsletters.models import Newsletter, Recipient, Message, UserRecipientLink
 
 
 class StyleFormMixin:
@@ -28,18 +28,47 @@ class NewsletterForm(StyleFormMixin, forms.ModelForm):
         model = Newsletter
         fields = ['start_time', 'end_time', 'message', 'recipients']
         widgets = {
-            'start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-            'end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'start_time': forms.DateTimeInput(
+                attrs={'type': 'datetime-local'},
+                format='%Y-%m-%dT%H:%M'
+            ),
+            'end_time': forms.DateTimeInput(
+                attrs={'type': 'datetime-local'},
+                format='%Y-%m-%dT%H:%M'
+            ),
         }
 
-
-class RecipientForm(StyleFormMixin, forms.ModelForm):
-    class Meta:
-        model = Recipient
-        fields = ['email', 'full_name', 'comment']
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        self.fields['message'].help_text = "Выберите сообщение из вашего списка."
+        self.fields['recipients'].help_text = "Зажмите Ctrl (или Cmd на Mac), чтобы выбрать несколько получателей."
+        if user:
+            self.fields['message'].queryset = Message.objects.filter(owner=user)
+            user_recipient_ids = UserRecipientLink.objects.filter(user=user).values_list('recipient_id', flat=True)
+            self.fields['recipients'].queryset = Recipient.objects.filter(id__in=user_recipient_ids)
 
 
 class MessageForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Message
         fields = ['subject', 'message']
+
+
+class RecipientCreateForm(StyleFormMixin, forms.ModelForm):
+    email = forms.EmailField(max_length=50, label="Почта")
+
+    class Meta:
+        model = UserRecipientLink
+        fields = ['full_name', 'comment']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        email_field = self.fields.pop('email')
+        self.fields = {'email': email_field, **self.fields}
+
+
+class RecipientUpdateForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = UserRecipientLink
+        fields = ['full_name', 'comment']

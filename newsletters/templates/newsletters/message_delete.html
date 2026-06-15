@@ -5,9 +5,13 @@
 {% block content %}
 {% include 'header.html' with header_title="Удалить сообщение из системы" header_lead="Вы должны подтвердить удаление сообщения" %}
 <div class="container" style="max-width: 500px;">
+    <p>Вы уверены, что хотите убрать <strong>{{ nl_message.subject }}</strong> из списка сообщений?</p>
     <form method="post" novalidate>
         {% csrf_token %}
-        <button type="submit" class="btn btn-danger mt-3">Удалить</button>
+        <div class="d-flex justify-content-between mt-3">
+            <a class="btn btn-outline-secondary" href="{{ nl_message.get_absolute_url }}">Отмена</a>
+            <button type="submit" class="btn btn-danger">Удалить</button>
+        </div>
     </form>
 </div>
 {% endblock %}

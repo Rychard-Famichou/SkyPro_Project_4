@@ -4,16 +4,25 @@
 
 {% block content %}
 {% url 'newsletters:message_form' as message_url %}
+{% if user.is_staff %}
+{% include 'header.html' with header_title="Все сообщения" header_lead="Модератору доступен просмотр всех сообщений. Нажмите на сообщение что бы просмотреть его детали." %}
+{% else %}
 {% include 'header.html' with header_title="Мои сообщения" header_lead="Ниже представлен список сообщений. Нажмите на сообщение что бы просмотреть его детали. Используйте кнопку выше что бы добавить новое сообщение." header_button="Добавить новое сообщение" header_url=message_url %}
+{% endif %}
+
 <div class="container my-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="list-group shadow-sm">
                 {% for nl_message in nl_messages %}
                 <a href="{% url 'newsletters:message_detail' nl_message.pk %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3">
-                    <div>
-                        <span class="text-muted small me-2">Сообщение №{{ nl_message.pk }}.</span>
-                        <strong class="text-dark">Тема: "{{ nl_message.subject }}"</strong>
+                    <div class="text-dark">
+                        {% if user.is_staff %}
+                        <span>Сообщение №{{ nl_message.pk }}.</span>
+                        {% else %}
+                        <span>Сообщение.</span>
+                        {% endif %}
+                        <span class="ms-2"><strong>Тема:</strong> "{{ nl_message.subject }}"</span>
                     </div>
                 </a>
                 {% endfor %}

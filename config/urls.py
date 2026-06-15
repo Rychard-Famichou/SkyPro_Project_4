@@ -17,7 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from newsletters.views import HomePageView
+
 urlpatterns = [
+    # Перенаправляем пустой путь
+    path("", HomePageView.as_view(), name="home"),  # Теперь это главная страница!
     path('admin/', admin.site.urls),
     path('newsletters/', include('newsletters.urls')),
+    path('users/', include('users.urls')),
+    path('accounts/', include('allauth.urls')),
 ]

@@ -16,6 +16,22 @@ files = [
 tests = ["mypy (>=1.14.0)", "pytest", "pytest-asyncio"]
 
 [[package]]
+name = "crispy-bootstrap5"
+version = "2026.3"
+description = "Bootstrap5 template pack for django-crispy-forms"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "crispy_bootstrap5-2026.3-py3-none-any.whl", hash = "sha256:e0fff85c0503e9aed610a0ee31368e2191d340657f813669491c288c1c2e2dfa"},
+    {file = "crispy_bootstrap5-2026.3.tar.gz", hash = "sha256:e7f5adb36acfbb456444c46e82c436931c796c539e9c620be4fa9dc9c9d6679c"},
+]
+
+[package.dependencies]
+django = ">=4.2"
+django-crispy-forms = ">=2.3"
+
+[[package]]
 name = "django"
 version = "6.0.6"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
@@ -35,6 +51,47 @@ tzdata = {version = "*", markers = "sys_platform == \"win32\""}
 [package.extras]
 argon2 = ["argon2-cffi (>=23.1.0)"]
 bcrypt = ["bcrypt (>=4.1.1)"]
+
+[[package]]
+name = "django-allauth"
+version = "65.18.0"
+description = "Integrated set of Django applications addressing authentication, registration, account management as well as 3rd party (social) account authentication."
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "django_allauth-65.18.0-py3-none-any.whl", hash = "sha256:e508640c83b94eaf1a9b4e9ac5332dc310dcdc83fca40d58a3f670e15bad1e84"},
+    {file = "django_allauth-65.18.0.tar.gz", hash = "sha256:afb82e2c545b9a5539370ad120468faaed84715e095a7b6e76972dacdc6376fe"},
+]
+
+[package.dependencies]
+asgiref = ">=3.8.1"
+Django = ">=4.2.16"
+
+[package.extras]
+headless = ["pyjwt[crypto] (>=2.0,<3)"]
+headless-spec = ["PyYAML (>=6,<7)"]
+idp-oidc = ["oauthlib (>=3.3.0,<4)", "pyjwt[crypto] (>=2.0,<3)"]
+mfa = ["fido2 (>=1.1.2,<3)", "qrcode (>=7.0.0,<9)"]
+openid = ["python3-openid (>=3.0.8,<4)"]
+saml = ["python3-saml (>=1.15.0,<2.0.0)"]
+socialaccount = ["oauthlib (>=3.3.0,<4)", "pyjwt[crypto] (>=2.0,<3)", "requests (>=2.0.0,<3)"]
+steam = ["python3-openid (>=3.0.8,<4)"]
+
+[[package]]
+name = "django-crispy-forms"
+version = "2.6"
+description = "Best way to have Django DRY forms"
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "django_crispy_forms-2.6-py3-none-any.whl", hash = "sha256:8ee0ae28b6b0ac41ff48a65944480c049fe8d1b0047086874fd7efabf4ec1374"},
+    {file = "django_crispy_forms-2.6.tar.gz", hash = "sha256:4921a1087c6cd4f9fa3c139654c1de1c1c385f8bd6729aaee530bc0121ab4b93"},
+]
+
+[package.dependencies]
+django = ">=5.2"
 
 [[package]]
 name = "psycopg"
@@ -143,6 +200,26 @@ files = [
 cli = ["click (>=5.0)"]
 
 [[package]]
+name = "redis"
+version = "8.0.0"
+description = "Python client for Redis database and key-value store"
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "redis-8.0.0-py3-none-any.whl", hash = "sha256:c938c18338585009f0bc310f4c7e4e4b4d37639356c4ac072cedf3af570c8dc7"},
+    {file = "redis-8.0.0.tar.gz", hash = "sha256:a00c5355432051ac14e593b8b197fc76c887ee12d55a0984f69328a1115fdc49"},
+]
+
+[package.extras]
+circuit-breaker = ["pybreaker (>=1.4.0)"]
+hiredis = ["hiredis (>=3.2.0)"]
+jwt = ["pyjwt (>=2.12.0)"]
+ocsp = ["cryptography (>=36.0.1)", "pyopenssl (>=20.0.1)", "requests (>=2.31.0)"]
+otel = ["opentelemetry-api (>=1.39.1)", "opentelemetry-exporter-otlp-proto-http (>=1.39.1)", "opentelemetry-sdk (>=1.39.1)"]
+xxhash = ["xxhash (>=3.6.0,<3.7.0)"]
+
+[[package]]
 name = "sqlparse"
 version = "0.5.5"
 description = "A non-validating SQL parser."
@@ -187,4 +264,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "940efbaf5bb85441186b30ff0d25a397715a5a1e1e86acec8e2ff8f9cbd47bee"
+content-hash = "e995d40875377629b396df2336bc52ca7e050a5f7e87fa22fc598db20e86a2ab"

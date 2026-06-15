@@ -1,15 +1,31 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
-{% block title %}Получатели{% endblock %}
+{% block title %}
+{% if is_update %}Редактирование получателя{% else %}Добавление получателя{% endif %}
+{% endblock %}
 
 {% block content %}
-{% include 'header.html' with header_title="Форма для добавления получателя" header_lead="Информация." %}
+{% if is_update %}
+{% include 'header.html' with header_title="Редактирование получателя" header_lead="Измените необходимые данные." %}
+{% else %}
+{% include 'header.html' with header_title="Добавление получателя" header_lead="Заполните информацию о новом получателе." %}
+{% endif %}
+
 <div class="container" style="max-width: 500px;">
-    <form method="post" novalidate enctype="multipart/form-data"> <!-- novalidate отключает стандартные подсказки браузера -->
+    <form method="post" novalidate>
         {% csrf_token %}
-        {{ form.non_field_errors }} <!-- Ошибки, которые не связаны с конкретными полями формы -->
-        {{ form.as_p }} <!-- Рендеринг всех полей формы и связанных с ними ошибок -->
-        <button type="submit" class="btn btn-primary mt-3">Сохранить</button>
+        {{ form|crispy }}
+        <div class="d-flex justify-content-between mt-3">
+            {% if link %}
+            <a class="btn btn-outline-secondary mt-3" href="{{ link.recipient.get_absolute_url }}">Отмена</a>
+            {% else %}
+            <a class="btn btn-outline-secondary mt-3" href="{% url 'newsletters:recipient_list' %}">Отмена</a>
+            {% endif %}
+            <button type="submit" class="btn btn-primary mt-3">
+                {% if is_update %}Сохранить изменения{% else %}Добавить{% endif %}
+            </button>
+        </div>
     </form>
 </div>
 {% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 500px;">
+    <h2>Вход в аккаунт</h2>
+    <form method="POST" action="{% url 'account_login' %}">
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <!-- Главная кнопка во всю ширину -->
+    <button type="submit" class="w-100 btn btn-primary py-2 mb-3">Войти</button>
+
+    <!-- Элегантный текст с ссылкой -->
+    <div class="text-center">
+        <span class="text-muted">Ещё нет аккаунта?</span>
+        <a href="{% url 'account_signup' %}" class="text-decoration-none ms-1">Зарегистрироваться</a>
+    </div>
+</form>
+
+</div>
+{% endblock %}
