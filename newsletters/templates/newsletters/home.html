@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+{% include 'header.html' with header_title="Добро пожаловать!" header_lead="Здесь расположена основная статистика сервиса." %}
+<div class="container ">
+    <div class="row">
+        <div class="col-4 text-center d-flex flex-column justify-content-between">
+            <h1>Общее количество рассылок: {{ total_newsletters }}</h1>
+        </div>
+        <div class="col-4 text-center d-flex flex-column justify-content-between">
+            <h1>Количество активных рассылок: {{ active_newsletters }}</h1>
+        </div>
+        <div class="col-4 text-center d-flex flex-column justify-content-between">
+            <h1>Общее количество получателей: {{ total_recipients }}</h1>
+        </div>
+    </div>
+</div>
+{% endblock %}

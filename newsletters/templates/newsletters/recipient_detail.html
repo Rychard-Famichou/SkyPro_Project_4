@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Получатель{% endblock %}
+
+{% block content %}
+{% include 'header.html' with header_title="Детали получателя" %}
+<div class="container mt-5">
+    <div class="row align-items-center mb-4">
+        <p><strong>Почта:</strong> {{ link.recipient.email }}</p>
+        <p><strong>Ф.И.О. -</strong> {{ link.full_name|default:"Не указано" }}</p>
+        <p><strong>Комментарий:</strong> {{ link.comment|default:"Нет комментария" }}</p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+        <a class="btn btn-outline-secondary mt-3" href="{% url 'newsletters:recipient_list' %}">Назад к списку
+            получателей</a>
+        <a class="btn btn-outline-warning mt-3" href="{% url 'newsletters:recipient_update' link.recipient.pk %}">Редактировать
+            получателя</a>
+        <a class="btn btn-outline-danger mt-3" href="{% url 'newsletters:recipient_delete' link.recipient.pk %}">Удалить
+            получателя</a>
+    </div>
+</div>
+{% endblock %}

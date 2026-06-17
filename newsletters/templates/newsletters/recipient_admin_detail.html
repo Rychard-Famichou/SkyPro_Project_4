@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Получатель{% endblock %}
+
+{% block content %}
+{% include 'header.html' with header_title="Детали получателя" header_lead="Модератору доступен просмотр связки получатель-пользователь. Нажмите на пользователя, чтобы узнать его детали." %}
+<div class="container mt-5">
+    <div class="row align-items-center mb-4">
+        <p><strong>Почта:</strong> {{ recipient.email }}</p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+        <a class="btn btn-outline-secondary mt-3" href="{% url 'newsletters:recipient_admin_list' %}">Назад к списку
+            получателей</a>
+    </div>
+</div>
+<div class="container mt-5">
+    <div class="card border-danger mb-4">
+        <div class="card-header bg-danger text-white">
+            <h2 class="h5 mb-0">Панель модератора</h2>
+        </div>
+        <div class="card-body">
+            <p class="card-text">
+                Этот email добавили к себе пользователей: <span
+                    class="badge bg-secondary fs-6">{{ all_links.count }}</span>
+            </p>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle m-0">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Пользователь (Кто добавил)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for link in all_links %}
+                    <tr>
+                        <td class="position-relative">
+                            <a href="{% url 'users:user_detail' link.owner.pk %}"
+                               class="text-reset text-decoration-none stretched-link">
+                                <strong>{{ link.owner.username }}</strong>
+                            </a>
+                            <span class="text-muted small">(id: {{ link.owner.pk }})</span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td class="text-muted text-center">Ни один пользователь еще не добавил этот email.</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

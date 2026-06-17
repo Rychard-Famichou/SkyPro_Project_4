@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+{% if is_update %}Редактирование сообщения{% else %}Добавление сообщения{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if is_update %}
+{% include 'header.html' with header_title="Редактирование сообщения" header_lead="Измените необходимые данные." %}
+{% else %}
+{% include 'header.html' with header_title="Добавление сообщения" header_lead="Заполните информацию о новом сообщении." %}
+{% endif %}
+
+<div class="container" style="max-width: 500px;">
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="d-flex justify-content-between mt-3">
+            <a class="btn btn-outline-secondary mt-3" href="{{ nl_message.get_absolute_url }}">Отмена</a>
+            <button type="submit" class="btn btn-primary mt-3">
+                {% if is_update %}Сохранить изменения{% else %}Добавить{% endif %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

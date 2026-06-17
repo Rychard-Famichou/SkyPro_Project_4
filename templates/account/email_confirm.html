@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load account %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-5 text-center">
+
+            <!-- Иконка подтверждения -->
+            <div class="mb-4 text-primary">
+                <svg xmlns="http://w3.org" width="64" height="64" fill="currentColor" class="bi bi-envelope-open" viewBox="0 0 16 16">
+                  <path d="M8.47 1.318a1 1 0 0 0-.94 0l-6 3.2A1 1 0 0 0 1 5.4v.817l5.75 3.45L8 8.917l1.25.75L15 6.217V5.4a1 1 0 0 0-.53-.882zM15 7.383l-4.778 2.867L15 13.117zm-.003 6.836L10.082 9.75 8 11l-2.082-1.25-4.915 4.47A1 1 0 0 0 2 15h12a1 1 0 0 0 .997-.781M1 13.116l4.773-4.866L1 5.383v7.733z"/>
+                </svg>
+            </div>
+
+            <h2 class="fw-bold mb-3">Подтвердите адрес электронной почты</h2>
+
+            {% if confirmation %}
+                {% user_display confirmation.email_address.user as user_display %}
+
+                <p class="text-muted fs-5 mb-4">
+                    Пожалуйста, подтвердите, что адрес
+                    <strong class="text-dark d-block mt-2 my-2">{{ confirmation.email_address.email }}</strong>
+                    закреплен за пользователем <strong>{{ user_display }}</strong>.
+                </p>
+
+                <!-- Форма отправки POST-запроса для активации -->
+                <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-lg w-100 py-3 shadow-sm fw-bold">
+                        Подтвердить
+                    </button>
+                </form>
+
+            {% else %}
+                <!-- Если токен невалиден или ссылка устарела -->
+                <div class="alert alert-danger p-4 text-start" role="alert">
+                    <h4 class="alert-heading fw-bold">Ссылка недействительна</h4>
+                    <p class="mb-0">
+                        Срок действия ссылки для подтверждения истёк, либо она уже была использована ранее.
+                    </p>
+                </div>
+                <a href="{% url 'account_email' %}" class="btn btn-outline-secondary w-100 py-2">
+                    Запросить новую ссылку
+                </a>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}
