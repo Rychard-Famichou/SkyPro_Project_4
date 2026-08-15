@@ -1,0 +1,56 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Рассылки{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body>
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+    <h5 class="my-0 mr-md-auto font-weight-normal">Сервис рассылок</h5>
+    <!-- Основные ссылки -->
+    <nav class="ms-5">
+        <a class="p-2 btn btn-outline-primary" href="{% url 'home' %}">Главная</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'newsletters:newsletter_list' %}">Рассылки</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'newsletters:message_list' %}">Сообщения</a>
+        {% if request.user.is_staff %}
+        <a class="p-2 btn btn-outline-primary" href="{% url 'newsletters:recipient_admin_list' %}">Получатели</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'users:user_list' %}">Пользователи</a>
+        {% else %}
+        <a class="p-2 btn btn-outline-primary" href="{% url 'newsletters:recipient_list' %}">Получатели</a>
+        {% endif %}
+    </nav>
+    <!-- Кнопки авторизации и имя пользователя -->
+    <nav class="ms-auto d-flex align-items-center">
+        {% if request.user.is_superuser %}
+        <a href="{% url 'admin:index' %}" class="badge bg-primary text-decoration-none p-2 me-2" target="_blank">
+            В админку
+        </a>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+        <span class="me-3 text-muted">Привет, <strong>{{ request.user.username }}</strong>!</span>
+        <a class="p-2 btn btn-outline-danger" href="{% url 'account_logout' %}">Выйти</a>
+        {% else %}
+        <span class="me-3 text-muted">Привет! Чтобы воспользоваться сервисом нужно авторизоваться.</span>
+        <a class="p-2 btn btn-outline-primary me-2" href="{% url 'account_signup' %}">Регистрация</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'account_login' %}">Войти</a>
+        {% endif %}
+    </nav>
+</div>
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show"
+         role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% block content %}{% endblock %}
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

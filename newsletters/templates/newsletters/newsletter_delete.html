@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Рассылка{% endblock %}
+
+{% block content %}
+{% include 'header.html' with header_title="Удалить рассылку из системы" header_lead="Вы должны подтвердить удаление рассылки" %}
+<div class="container" style="max-width: 500px;">
+    <p>Вы уверены, что хотите убрать рассылку с темой <strong>{{ newsletter.message.subject }}</strong> из списка рассылок?</p>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="d-flex justify-content-between mt-3">
+            <a class="btn btn-outline-secondary" href="{{ newsletter.get_absolute_url }}">Отмена</a>
+            <button type="submit" class="btn btn-danger">Удалить</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

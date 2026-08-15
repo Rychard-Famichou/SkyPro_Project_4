@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Получатели{% endblock %}
+
+{% block content %}
+{% url 'newsletters:recipient_form' as recipient_url %}
+{% include 'header.html' with header_title="Все получатели" header_lead="Модератору доступен просмотр всех получателей. Нажмите на получателя что бы просмотреть его детали." %}
+
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-danger my-4 shadow-sm">
+                <div class="card-header bg-danger text-white py-2">
+                    <h3 class="h6 mb-0">Фильтрация и поиск модератора</h3>
+                </div>
+                <div class="card-body bg-light-subtle">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-5">
+                            <label for="search" class="form-label fw-semibold text-secondary small">Поиск по имени ящика
+                                (до @)</label>
+                            <input type="text" name="search" id="search" class="form-control"
+                                   placeholder="Например: ivan.ivanov" value="{{ current_search }}">
+                        </div>
+                        <div class="col-md-5">
+                            <label for="domain" class="form-label fw-semibold text-secondary small">Фильтр по
+                                домену</label>
+                            <input type="text" name="domain" id="domain" class="form-control"
+                                   placeholder="Например: gmail.com" value="{{ current_domain }}">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <div class="btn-group w-100" role="group">
+                                <button type="submit" class="btn btn-danger">Найти</button>
+                                {% if current_search or current_domain %}
+                                <a href="{% url 'newsletters:recipient_list' %}" class="btn btn-outline-secondary"
+                                   title="Сбросить фильтры">✕</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="list-group shadow-sm">
+                {% for recipient in recipients %}
+                <a href="{% url 'newsletters:recipient_admin_detail' recipient.pk %}"
+                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3">
+                    <div class="text-dark">
+                        <span>Получатель №: {{ recipient.pk }}.</span>
+                        <strong class="ms-2">Почта: {{ recipient.email }}.</strong>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
